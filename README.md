@@ -1,5 +1,6 @@
 # combocolor
-programmation
+programmation :
+
 Dans la variante simplifiée proposée dans le cadre du projet, le jeu se limite à 2 joueurs possédant chacun 2 couleurs 
 (rouge et bleu pour le joueur A, vert et jaune pour le joueur B). De plus, le plateau de jeu est une simple grille composée de 24 zones de 5 cases chacune 
 (cf. image ci-dessus). Chaque zone est taggée avec l'un des trois types de labels permettant d'identifier la valeur de la zone pour le décompte final des points : 
