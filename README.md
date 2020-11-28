@@ -1,5 +1,5 @@
 # combocolor
-programmation :
+Programmation :
 
 Dans la variante simplifiée proposée dans le cadre du projet, le jeu se limite à 2 joueurs possédant chacun 2 couleurs 
 (rouge et bleu pour le joueur A, vert et jaune pour le joueur B). De plus, le plateau de jeu est une simple grille composée de 24 zones de 5 cases chacune 
@@ -17,3 +17,6 @@ permettant d'identifier la nature des labels de score pour chacune des cases. Co
 permettant de modéliser le jeu de manière abstraite, puis une (ou plusieurs) classe(s) pour l'interface graphique qui mettra en oeuvre la visualisation du plateau de jeu et la gestion des actions des deux joueurs. 
 Pour le coloriage des zones lors des tours de jeu, le plus simple est d'utiliser la bibliothèque Pillow qui fournit de nombreux algorithmes de traitement d'images, et en particulier, 
 une fonction floodfill qui permet de remplir une zone homogène d'une image avec une couleur spécifiée.
+
+Noyau : générer le score, savoir où on en est en terme de remplissage
+Interface : identifier la case cliqué (récupérer en terme de coordonnées de pixel) => à convertir (division par 63 (car case de 63X63) pour avoir l'indice de ligne et de colonne) et le renvoyer au noyau pour savoir si on a cliqué sur un +1, x2... et mettre à jour le score.
