@@ -7,6 +7,7 @@ Dans la variante simplifiée proposée dans le cadre du projet, le jeu se limite
  - un label bleu correspond à des points additifs, 
  - un label rouge à des points soustractifs 
  - label vert à des points multiplicatifs. 
+ 
  Les scores se calculent par couleur: on effectue le total des points bleus auxquels on retranche le total des points rouges, 
  et on multiplie le résultat obtenu par le total des points verts. 
 Le score global de chaque joueur est défini à tout moment comme le produit (et non pas la somme) des scores correspondants à ses deux couleurs. 
