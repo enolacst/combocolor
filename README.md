@@ -19,4 +19,5 @@ Pour le coloriage des zones lors des tours de jeu, le plus simple est d'utiliser
 une fonction floodfill qui permet de remplir une zone homogène d'une image avec une couleur spécifiée.
 
 Noyau : générer le score, savoir où on en est en terme de remplissage
+
 Interface : identifier la case cliqué (récupérer en terme de coordonnées de pixel) => à convertir (division par 63 (car case de 63X63) pour avoir l'indice de ligne et de colonne) et le renvoyer au noyau pour savoir si on a cliqué sur un +1, x2... et mettre à jour le score.
