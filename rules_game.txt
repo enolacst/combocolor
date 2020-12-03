@@ -1,0 +1,14 @@
+Voici les règles du jeu du ComboColor : 
+
+Le jeu se limite à 2 joueurs possédant chacun 2 couleurs (rouge et bleu pour le joueur A,
+vert et jaune pour le joueur B). De plus, le plateau de jeu est une simple grille composée de 24 zones de 5 cases chacune. 
+Il faut choisir les case que vous voulez colorier sachant que vous ne pouvez choisir qu'une case adjacente è une déjà coloriée.
+Les scores se calculent par couleur: 
+on effectue le total des points bleus auxquels on retranche le total des points rouges, 
+et on multiplie le résultat obtenu par le total des points verts. 
+Le score global de chaque joueur est défini à tout moment comme le produit 
+(et non pas la somme) des scores correspondants à ses deux couleurs. 
+
+La partie est terminée quand toute la grille est remplie. 
+Le gagnant est celui avec le plus de point.
+A vous de jouer !
