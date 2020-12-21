@@ -16,7 +16,7 @@ class ComboColor(Win):
   def __init__(self):
     """create the main window and pack the widgets"""
     self.game = ComboGame() # create an instance of the kernel class
-    Win.__init__(self, title='ComboColor', click=self.on_click, op=5)
+    Win.__init__(self, title='ComboColor', op=5)
     # --------------------------------------------------------------------------
     self.count=0
     self.frame1=Frame(self,grow=False, op=0)
@@ -41,42 +41,43 @@ class ComboColor(Win):
 # --------------------------------------------------------------------------
   def grid(self,grid_name,width=699,height=699):
     """nouvelle fenetre pour l'image"""
-    self.win=Win(self,title='Grille',fold=1,grow=True)
+    self.win=Win(self,title='Grille',fold=1,grow=True,click=self.on_click, op=5)
     label1=Label(self.win, text='SCORE joueur A :', font='Arial 18 bold italic')#affichage du score joueur A
     label2=Label(self.win, text='SCORE joueur B :', font='Arial 18 bold italic')#affichage du score joueur B
     self.board= Image.new('RGB',(width,height))
     self.image= ImageTk.PhotoImage(self.board)
-    label=Label(self.win, text='grille de jeu', font='Arial 18 bold italic',width=width,height=height,image=self.image)
+    self.label=Label(self.win, text='grille de jeu', font='Arial 18 bold italic',width=width,height=height,image=self.image)
     #Button(self.win,text='Fermer',fg="grey",font='Arial 18 bold', command=self.win.exit)
-    self.width, self.height = width, height
     # --------------------------------------------------------------------------
+    self.gridName=grid_name
     self.afficher(grid_name);#récupération nom de la grille
     #self.loop();
     # --------------------------------------------------------------------------
   def afficher(self,grid_name):
     """affichage de l'image selon la grille"""
-    image=self.board
+    #image=self.board
     self.grille=Image.open('images/'+grid_name+'.png')#ouverture de l'image
-    image.paste(self.grille)
-    self.image.paste(image)
-    #self.grille['image'] = self.image = ImageTk.PhotoImage(image) # update
+    self.board.paste(self.grille)
+    self.image.paste(self.board)
+    #self.label['image'] = self.image = ImageTk.PhotoImage(image) # update
     # --------------------------------------------------------------------------
     self.loop(); 
     # -------------------------------------------------------------------------
   def on_click(self, widget, code, mods):
     """apply floodfiil """
-    if widget != self.win: return # only click on board are processed
+    if widget != self.label: return # only click on board are processed
     x = (widget.winfo_pointerx() - widget.winfo_rootx()) # get x coord for mouse 
     y = (widget.winfo_pointery() - widget.winfo_rooty()) # get y coord for mouse
     coordx=x//63 #carré de 63 par 63
     coordy=y//63
     colors = ((255,255,0),(255,0,0),(0,255,0), (0,0,255)) # define RGB colorset
-    if self.board.getpixel((coordx,coordy)) != (255,255,255):
+    if self.board.getpixel((x,y)) != (255,255,255):
       return # no floodfill when color of seed pixel is not white
     self.count=(self.count+1)%4
     color = colors[self.count] # select color from colorset
-    ImageDraw.floodfill(self.board, (coordx,coordy), color, thresh=128) # apply floodfill
+    ImageDraw.floodfill(self.board, (x,y), color, thresh=128) # apply floodfill
     self.label['image'] = self.image = ImageTk.PhotoImage(self.board) # update
+    self.score = self.game.texte(coordx,coordy,color,self.gridName)
 # ==============================================================================
 if __name__ == "__main__": # testcode for class combo
   ComboColor()
