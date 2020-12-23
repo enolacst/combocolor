@@ -13,8 +13,8 @@ class ComboGame(object):
   # ----------------------------------------------------------------------------
   def __init__(self, config='full'):
     """initialize 'self' by creating the board with chosen game configuration"""
-    #self.reset(config)
-    self.scores=[[0,0], [0,0], [0,0], [0,0]]
+    self.scores=[[0,1], [0,1], [0,1], [0,1]]
+    self.countColors=0
     #[[AR,MR], [AG,MG], [AB,MB], [AY,MY]]
   # ----------------------------------------------------------------------------
 ##  def __repr__(self):
@@ -44,7 +44,7 @@ class ComboGame(object):
     if tags[0]!=0 : #si la première partie est différente de 0 alors on met dans A
       self.scores[i][0]+=tags[0]
     else :
-      self.scores[i][1]+=tags[1] # sinon c'est une multiplication, on met dans M
+      self.scores[i][1]*=tags[1] # sinon c'est une multiplication, on met dans M
 
     AR=self.scores[0][0]#attribution
     MR=self.scores[0][1]
@@ -53,9 +53,7 @@ class ComboGame(object):
     if AR==0 and MR==0 and AB==0 and MB==0 : A=0 #si tout est = 0
     else : # pour ne pas avoir de multiplication par 0
       if AR==0 : AR=1 
-      if MR==0 : MR=1
       if AB==0 : AB=1
-      if MB==0 : MB=1
       A = (AR*MR*AB*MB)#calcul final A, produit des scores rouge et bleu
     
     AG=self.scores[1][0]
@@ -65,21 +63,18 @@ class ComboGame(object):
     if AG==0 and MG==0 and AY==0 and MY==0 : B=0 #si tout est = 0
     else : # pour ne pas avoir de multiplication par 0
       if AG==0 : AG=1 
-      if MG==0 : MG=1
       if AY==0 : AY=1
-      if MY==0 : MY=1
       B = (AG*MG*AY*MY)#calcul final B, produit des scores vert et jaune
-    #print([[AR,MR], [AG,MG], [AB,MB], [AY,MY]])
-    print([A,B])
-    return [A,B]
-  # --------------------------------------------------------------------------
-  #def gagnant(sel):
+
+    self.countColors+=1 #on rajoute une case colorée
+    
+    if self.countColors==24 : return [A,B,True] #savoir si toutes les cases sont coloriées
+    return [A,B, False] #toutes les cases ne sont pas coloriée
   # -------------------------------------------------------------------------- 
   def texte(self,coordx,coordy,color,file_name):
     """lecture du fichier texte"""
     self.color=color
     txt = read_blk(file_name+'.txt')#lecture du fichier texte associé a la grille
-    #print(txt[coordy][coordx])
     return self.score(txt[coordy][coordx])
 # ==============================================================================
 if __name__ == "__main__": # testcode for class 'ComboGame'
