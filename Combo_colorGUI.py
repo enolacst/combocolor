@@ -20,7 +20,7 @@ class ComboColor(Win):
     # --------------------------------------------------------------------------
     self.count=0
     self.frame1=Frame(self,grow=False, op=0)
-    Label(self.frame1, text='Choix de la grille de jeu', font='Arial 18 bold italic')
+    self.label=Label(self.frame1, text='Choix de la grille de jeu', font='Arial 15 bold italic')
     self.frame2 = Frame(self, op=0)
     Button(self.frame2, text='Grille A',fg="cyan",font='Arial 18 bold',command=lambda:self.grid('boardA'))
     Button(self.frame2, text='Grille B',fg="red",font='Arial 18 bold',command=lambda:self.grid('boardB'))
@@ -35,12 +35,14 @@ class ComboColor(Win):
     #self.reset();
     # ----------------------------------------------------------------------------
   def rules(self):
-    self.win=Win(title='Règles du jeu', font='Courier 15')#fenetre pour les règles du jeu
+    self.win1=Win(title='Règles du jeu', font='Courier 15')#fenetre pour les règles du jeu
     self.txt = read_txt('rules_game.txt')#lecture texte
-    Label(self.win, text=self.txt,grow=False)
+    Label(self.win1, text=self.txt,grow=False)
 # --------------------------------------------------------------------------
   def grid(self,grid_name,width=699,height=699):
     """nouvelle fenetre pour l'image"""
+    self.frame2.destroy()#on elève les bouttons
+    self.label.destroy()#on enlève le text
     self.win=Win(self,title='Grille',fold=1,grow=True,click=self.on_click, op=5)
     self.label1=Label(self.win, text='SCORE', font='Arial 15 bold italic')#affichage du score joueur A
     self.label2=Label(self.win, text='SCORE', font='Arial 15 bold italic')#affichage du score joueur B
@@ -72,13 +74,13 @@ class ComboColor(Win):
     if self.board.getpixel((x,y)) != (255,255,255):
       return # no floodfill when color of seed pixel is not white
     
-    color = colors[self.count] #select color from colorset
-    self.count=(self.count+1)%4 #couleur dans l'ordre
     
     # vérification des adjacentes
     estAdjacent = self.game.verifAdjacent(coordx,coordy,self.gridName, self.board)
     
     if estAdjacent:
+      color = colors[self.count] #select color from colorset
+      self.count=(self.count+1)%4 #couleur dans l'ordre
       ImageDraw.floodfill(self.board, (x,y), color, thresh=128) # apply floodfill
       self.label['image'] = self.image = ImageTk.PhotoImage(self.board) # update
       self.score = self.game.texte(coordx,coordy,color,self.gridName)
@@ -90,14 +92,15 @@ class ComboColor(Win):
         self.win2=Win(self,title='Gagnant',fold=1,grow=True, op=5) # fenetre finale
         if self.score[0]>self.score[1]:
           Label(self.win2,text='Le joueur A remporte la partie', font='Arial 20 bold')
-
+          Button(self.win2,tet='Retour au menu', font='Arial 20 bold')
         elif self.score[0]<self.score[1]:
           Label(self.win2,text='Le joueur B remporte la partie', font='Arial 20 bold')
+          Button(self.win2,tet='Retour au menu', font='Arial 20 bold')
         else :
           Label(self.win2,text='Les joueurs sont à égalité', font='Arial 20 bold')
+          Button(self.win2,tet='Retour au menu', font='Arial 20 bold')
     # --------------------------------------------------------------------------
     self.loop();
-    
 # ==============================================================================
 if __name__ == "__main__": # testcode for class combo
   ComboColor()

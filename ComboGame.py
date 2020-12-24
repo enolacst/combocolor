@@ -68,7 +68,9 @@ class ComboGame(object):
 
     self.countColors+=1 #on rajoute une case colorée
     
-    if self.countColors==24 : return [A,B,True] #savoir si toutes les cases sont coloriées
+    if self.countColors==24 :
+      self.scores=[[0,1], [0,1], [0,1], [0,1]] #partie finie on remet les score à 0
+      return [A,B,True] #savoir si toutes les cases sont coloriées
     return [A,B, False] #toutes les cases ne sont pas coloriée
   # -------------------------------------------------------------------------- 
   def texte(self,coordx,coordy,color,file_name):
