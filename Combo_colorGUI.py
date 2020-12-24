@@ -75,22 +75,26 @@ class ComboColor(Win):
     color = colors[self.count] #select color from colorset
     self.count=(self.count+1)%4 #couleur dans l'ordre
     
-    ImageDraw.floodfill(self.board, (x,y), color, thresh=128) # apply floodfill
-    self.label['image'] = self.image = ImageTk.PhotoImage(self.board) # update
-    self.score = self.game.texte(coordx,coordy,color,self.gridName)
-    self.label1['text']='Score joueur A : '+str(self.score[0]) #modification au fur et à mesure du score A
-    self.label2['text']='Score joueur B : '+str(self.score[1]) #modification au fur et à mesure du score B
+    # vérification des adjacentes
+    estAdjacent = self.game.verifAdjacent(coordx,coordy,self.gridName, self.board)
+    
+    if estAdjacent:
+      ImageDraw.floodfill(self.board, (x,y), color, thresh=128) # apply floodfill
+      self.label['image'] = self.image = ImageTk.PhotoImage(self.board) # update
+      self.score = self.game.texte(coordx,coordy,color,self.gridName)
+      self.label1['text']='Score joueur A : '+str(self.score[0]) #modification au fur et à mesure du score A
+      self.label2['text']='Score joueur B : '+str(self.score[1]) #modification au fur et à mesure du score B
 
-    print(self.score)
-    if self.score[2] : #si toute la grille est remplie
-      self.win2=Win(self,title='Gagnant',fold=1,grow=True, op=5) # fenetre finale
-      if self.score[0]>self.score[1]:
-        Label(self.win2,text='Le joueur A remporte la partie', font='Arial 20 bold')
-        
-      elif self.score[0]<self.score[1]:
-        Label(self.win2,text='Le joueur B remporte la partie', font='Arial 20 bold')
-      else :
-        Label(self.win2,text='Les joueurs sont à égalité', font='Arial 20 bold')
+      print(self.score)
+      if self.score[2] : #si toute la grille est remplie
+        self.win2=Win(self,title='Gagnant',fold=1,grow=True, op=5) # fenetre finale
+        if self.score[0]>self.score[1]:
+          Label(self.win2,text='Le joueur A remporte la partie', font='Arial 20 bold')
+
+        elif self.score[0]<self.score[1]:
+          Label(self.win2,text='Le joueur B remporte la partie', font='Arial 20 bold')
+        else :
+          Label(self.win2,text='Les joueurs sont à égalité', font='Arial 20 bold')
     # --------------------------------------------------------------------------
     self.loop();
     
