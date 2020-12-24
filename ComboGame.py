@@ -76,6 +76,70 @@ class ComboGame(object):
     self.color=color
     txt = read_blk(file_name+'.txt')#lecture du fichier texte associé a la grille
     return self.score(txt[coordy][coordx])
+  # -------------------------------------------------------------------------- 
+  def verifAdjacent(self,coordx,coordy,file_name, board):
+    txt = read_blk(file_name+'.txt')
+    lettre = txt[coordy][coordx]
+    caseVerifie = []
+    caseAVerifie = []
+    reponse = False
+    caseAVerifie.append([coordy,coordx])
+    index = 0
+    while len(caseAVerifie) > 0 and index < 20:
+      coord = caseAVerifie.pop()
+      coordy = coord[0]
+      coordx = coord[1]
+      if coordy != 0:
+        if [coordy-1,coordx] not in caseVerifie:
+          if txt[coordy-1][coordx] != lettre:
+            if self.verifCouleur((coordy-1)*63,coordx*63, board):
+              caseAVerifie = []
+              reponse = True
+              break
+          else:
+            caseAVerifie.append([coordy-1,coordx])
+
+      if coordy != 10:
+        if [coordy+1,coordx] not in caseVerifie:
+          if txt[coordy+1][coordx] != lettre:
+            if self.verifCouleur((coordy+1)*63,coordx*63, board):
+              caseAVerifie = []
+              reponse = True
+              break
+          else:
+            caseAVerifie.append([coordy+1,coordx])
+
+      if coordx != 0:
+        if [coordy,coordx-1] not in caseVerifie:
+          if txt[coordy][coordx-1] != lettre:
+            if self.verifCouleur(coordy*63,(coordx-1)*63, board):
+              caseAVerifie = []
+              reponse = True
+              break
+          else:
+            caseAVerifie.append([coordy,coordx-1])
+
+      if coordx != 10:
+        if [coordy,coordx+1] not in caseVerifie:
+          if txt[coordy][coordx+1] != lettre:
+            if self.verifCouleur(coordy*63,(coordx+1)*63, board):
+              caseAVerifie = []
+              reponse = True
+              break
+          else:
+            caseAVerifie.append([coordy,coordx+1])
+      caseVerifie.append([coordy,coordx])
+      index += 1
+    
+    return reponse
+
+# -------------------------------------------------------------------------- 
+  def verifCouleur(self,coordy,coordx,board):
+    coordx+=10
+    coordy+=10
+    if board.getpixel((coordx,coordy)) != (255,255,255):
+      return True 
+    return False
 # ==============================================================================
 if __name__ == "__main__": # testcode for class 'ComboGame'
   code = r'''
