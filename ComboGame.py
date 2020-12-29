@@ -15,21 +15,6 @@ class ComboGame(object):
     """initialize 'self' by creating the board with chosen game configuration"""
     self.scores=[[0,1], [0,1], [0,1], [0,1]]
     self.countColors=0
-    #[[AR,MR], [AG,MG], [AB,MB], [AY,MY]]
-  # ----------------------------------------------------------------------------
-##  def __repr__(self):
-##    """return object representation for 'self'"""
-##    return "%s(config=%r)" % (type(self).__name__, self.config)
-##  # ----------------------------------------------------------------------------
-##  def __str__(self):
-##    """return string representation for 'self'"""
-##    return ' '.join(list(self.board)).replace(': ', '\n')
-##  # ----------------------------------------------------------------------------
-##  def reset(self, config=''):
-##    """reset the board and set game configuration according to 'config'"""
-##  # ----------------------------------------------------------------------------
-##  def clear(self):
-##    self[:,:]=self.none; return self()
   # ----------------------------------------------------------------------------
   def score(self,lettre):
     """calcul score"""
@@ -68,8 +53,9 @@ class ComboGame(object):
 
     self.countColors+=1 #on rajoute une case colorée
     
-    if self.countColors==24 :
+    if self.countColors==1 :
       self.scores=[[0,1], [0,1], [0,1], [0,1]] #partie finie on remet les score à 0
+      self.countColors=0
       return [A,B,True] #savoir si toutes les cases sont coloriées
     return [A,B, False] #toutes les cases ne sont pas coloriée
   # -------------------------------------------------------------------------- 
@@ -80,28 +66,30 @@ class ComboGame(object):
     return self.score(txt[coordy][coordx])
   # -------------------------------------------------------------------------- 
   def verifAdjacent(self,coordx,coordy,file_name, board):
-    txt = read_blk(file_name+'.txt')
-    lettre = txt[coordy][coordx]
-    caseVerifie = []
-    caseAVerifie = []
-    reponse = False
+    """vérification pour colorié une case adjacente à une case déjà coloriée"""
+    txt = read_blk(file_name+'.txt')#lecture du fichier texte
+    lettre = txt[coordy][coordx]#lettre qui correspond
+    caseVerifie = [] #tableau des lettre que j'ai déjà vérifié
+    caseAVerifie = [] #tableau des lettre à vérifier
+    reponse = False 
     caseAVerifie.append([coordy,coordx])
     index = 0
-    while len(caseAVerifie) > 0 and index < 20:
-      coord = caseAVerifie.pop()
+    while len(caseAVerifie) > 0 and index < 50: #<50 pour sécurité, tant qu'il y a des cases a vérifier
+      coord = caseAVerifie.pop()#sort coordonnées à vérifier
       coordy = coord[0]
       coordx = coord[1]
-      if coordy != 0:
-        if [coordy-1,coordx] not in caseVerifie:
-          if txt[coordy-1][coordx] != lettre:
-            if self.verifCouleur((coordy-1)*63,coordx*63, board):
-              caseAVerifie = []
-              reponse = True
-              break
-          else:
+      #regarder si lettre au dessus/en dessous/à gauche/à droite est coloriée
+      if coordy != 0: #vérifier case au dessus, si coordy=0 on est dans le coin 
+        if [coordy-1,coordx] not in caseVerifie:#regarder si coordonée ne sont pas dans le tableau caseVerifie
+          if txt[coordy-1][coordx] != lettre: #regarde si meme lettre donc meme case
+            if self.verifCouleur((coordy-1)*63,coordx*63, board): #vérifie si lettre à coté est colorié ou non
+              caseAVerifie = []#plus de case à vérifier  
+              reponse = True #si on trouve une couleur
+              break #casse boucle while, on sort
+          else: #si même lettre je rajoute dans tableau à vérifier
             caseAVerifie.append([coordy-1,coordx])
 
-      if coordy != 10:
+      if coordy != 10: #case en dessous
         if [coordy+1,coordx] not in caseVerifie:
           if txt[coordy+1][coordx] != lettre:
             if self.verifCouleur((coordy+1)*63,coordx*63, board):
@@ -111,7 +99,7 @@ class ComboGame(object):
           else:
             caseAVerifie.append([coordy+1,coordx])
 
-      if coordx != 0:
+      if coordx != 0: #case à gauche
         if [coordy,coordx-1] not in caseVerifie:
           if txt[coordy][coordx-1] != lettre:
             if self.verifCouleur(coordy*63,(coordx-1)*63, board):
@@ -121,7 +109,7 @@ class ComboGame(object):
           else:
             caseAVerifie.append([coordy,coordx-1])
 
-      if coordx != 10:
+      if coordx != 10: #case à droite
         if [coordy,coordx+1] not in caseVerifie:
           if txt[coordy][coordx+1] != lettre:
             if self.verifCouleur(coordy*63,(coordx+1)*63, board):
@@ -130,6 +118,7 @@ class ComboGame(object):
               break
           else:
             caseAVerifie.append([coordy,coordx+1])
+
       caseVerifie.append([coordy,coordx])
       index += 1
     
@@ -137,9 +126,10 @@ class ComboGame(object):
 
 # -------------------------------------------------------------------------- 
   def verifCouleur(self,coordy,coordx,board):
-    coordx+=10
+    """vérifier si bien blanc"""
+    coordx+=10 #vrai coordonnée, on ajoute 10 pour ne pas se retrouver dans la bande noire (remultiplication par 63)
     coordy+=10
-    if board.getpixel((coordx,coordy)) != (255,255,255):
+    if board.getpixel((coordx,coordy)) != (255,255,255):#différent de blanc
       return True 
     return False
 # ==============================================================================

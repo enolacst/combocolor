@@ -19,8 +19,10 @@ class ComboColor(Win):
     Win.__init__(self, title='ComboColor', op=5)
     # --------------------------------------------------------------------------
     self.count=0
+    self.frame3=Frame(self, op=0)
+    Button(self.frame3, text='Règle du jeu',font='Arial 15',command=self.rules)
     self.frame1=Frame(self,grow=False, op=0)
-    self.label=Label(self.frame1, text='Choix de la grille de jeu', font='Arial 15 bold italic')
+    self.label_txt=Label(self.frame1, text='Choix de la grille de jeu', font='Arial 15 bold italic')
     self.frame2 = Frame(self, op=0)
     Button(self.frame2, text='Grille A',fg="cyan",font='Arial 18 bold',command=lambda:self.grid('boardA'))
     Button(self.frame2, text='Grille B',fg="red",font='Arial 18 bold',command=lambda:self.grid('boardB'))
@@ -28,8 +30,6 @@ class ComboColor(Win):
     Button(self.frame2, text='Grille D',fg="orange",font='Arial 18 bold',command=lambda:self.grid('boardD'))
     Button(self.frame2, text='Grille E',fg="purple",font='Arial 18 bold',command=lambda:self.grid('boardE'))
     Button(self.frame2, text='Grille F',fg="grey",font='Arial 18 bold',command=lambda:self.grid('boardF'))
-    self.frame3=Frame(self, op=0)
-    Button(self.frame3, text='Règle du jeu',font='Arial 15',command=self.rules)
     # --------------------------------------------------------------------------
     self.loop();
     #self.reset();
@@ -42,7 +42,7 @@ class ComboColor(Win):
   def grid(self,grid_name,width=699,height=699):
     """nouvelle fenetre pour l'image"""
     self.frame2.destroy()#on elève les bouttons
-    self.label.destroy()#on enlève le text
+    self.label_txt.destroy()#on enlève le text
     self.win=Win(self,title='Grille',fold=1,grow=True,click=self.on_click, op=5)
     self.label1=Label(self.win, text='SCORE', font='Arial 15 bold italic')#affichage du score joueur A
     self.label2=Label(self.win, text='SCORE', font='Arial 15 bold italic')#affichage du score joueur B
@@ -61,7 +61,22 @@ class ComboColor(Win):
     self.board.paste(self.grille)
     self.image.paste(self.board)
     # --------------------------------------------------------------------------
-    self.loop(); 
+    self.loop();
+    # --------------------------------------------------------------------------
+  def new_window(self):
+    #self.newWindow = Toplevel(self)
+    self.label_txt=Label(self.frame1, text='Choix de la grille de jeu', font='Arial 15 bold italic')
+    self.frame2 = Frame(self, op=0)
+    Button(self.frame2, text='Grille A',fg="cyan",font='Arial 18 bold',command=lambda:self.grid('boardA'))
+    Button(self.frame2, text='Grille B',fg="red",font='Arial 18 bold',command=lambda:self.grid('boardB'))
+    Button(self.frame2, text='Grille C',fg="pink",font='Arial 18 bold',command=lambda:self.grid('boardC'))
+    Button(self.frame2, text='Grille D',fg="orange",font='Arial 18 bold',command=lambda:self.grid('boardD'))
+    Button(self.frame2, text='Grille E',fg="purple",font='Arial 18 bold',command=lambda:self.grid('boardE'))
+    Button(self.frame2, text='Grille F',fg="grey",font='Arial 18 bold',command=lambda:self.grid('boardF'))
+    self.win.exit()#fermer fenetre de la grille
+    self.win2.exit()#fermer 
+    self.count=0
+
     # -------------------------------------------------------------------------
   def on_click(self, widget, code, mods):
     """apply floodfiil """
@@ -89,16 +104,16 @@ class ComboColor(Win):
 
       print(self.score)
       if self.score[2] : #si toute la grille est remplie
-        self.win2=Win(self,title='Gagnant',fold=1,grow=True, op=5) # fenetre finale
+        self.win2=Win(self,title='Gagnant',fold=1,grow=False, op=5) # fenetre finale
         if self.score[0]>self.score[1]:
-          Label(self.win2,text='Le joueur A remporte la partie', font='Arial 20 bold')
-          Button(self.win2,tet='Retour au menu', font='Arial 20 bold')
+          self.label=Label(self.win2,text='Le joueur A remporte la partie', font='Arial 20 bold')
+          Button(self.win2,text='Retour au menu', font='Arial 20 bold', command=self.new_window)
         elif self.score[0]<self.score[1]:
           Label(self.win2,text='Le joueur B remporte la partie', font='Arial 20 bold')
-          Button(self.win2,tet='Retour au menu', font='Arial 20 bold')
+          Button(self.win2,text='Retour au menu', font='Arial 20 bold', command=self.new_window)
         else :
           Label(self.win2,text='Les joueurs sont à égalité', font='Arial 20 bold')
-          Button(self.win2,tet='Retour au menu', font='Arial 20 bold')
+          Button(self.win2,text='Retour au menu', font='Arial 20 bold',command=self.new_window)
     # --------------------------------------------------------------------------
     self.loop();
 # ==============================================================================
