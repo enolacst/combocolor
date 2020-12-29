@@ -53,7 +53,7 @@ class ComboGame(object):
 
     self.countColors+=1 #on rajoute une case colorée
     
-    if self.countColors==1 :
+    if self.countColors==24 :
       self.scores=[[0,1], [0,1], [0,1], [0,1]] #partie finie on remet les score à 0
       self.countColors=0
       return [A,B,True] #savoir si toutes les cases sont coloriées
