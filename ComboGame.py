@@ -36,20 +36,20 @@ class ComboGame(object):
     AB=self.scores[2][0]
     MB=self.scores[2][1]
     if AR==0 and MR==0 and AB==0 and MB==0 : A=0 #si tout est = 0
-    else : # pour ne pas avoir de multiplication par 0
-      if AR==0 : AR=1 
-      if AB==0 : AB=1
-      A = (AR*MR*AB*MB)#calcul final A, produit des scores rouge et bleu
+    #else : # pour ne pas avoir de multiplication par 0
+      #if AR==0 : AR=1 
+      #if AB==0 : AB=1
+    else : A = (AR*MR*AB*MB)#calcul final A, produit des scores rouge et bleu
     
     AG=self.scores[1][0]
     MG=self.scores[1][1]
     AY=self.scores[3][0]
     MY=self.scores[3][1]
     if AG==0 and MG==0 and AY==0 and MY==0 : B=0 #si tout est = 0
-    else : # pour ne pas avoir de multiplication par 0
-      if AG==0 : AG=1 
-      if AY==0 : AY=1
-      B = (AG*MG*AY*MY)#calcul final B, produit des scores vert et jaune
+   # else : # pour ne pas avoir de multiplication par 0
+      #if AG==0 : AG=1 
+      #if AY==0 : AY=1
+    else: B = (AG*MG*AY*MY)#calcul final B, produit des scores vert et jaune
 
     self.countColors+=1 #on rajoute une case colorée
     
